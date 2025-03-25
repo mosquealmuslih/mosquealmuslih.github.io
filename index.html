@@ -1,28 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
   <head>
+    <meta charset="UTF-8" />
     <title>Website Dinamis Firebase</title>
   </head>
   <body>
     <h1>Data dari Firebase</h1>
-    <ul id="data-list"></ul>
+    <div id="data-container"></div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js"></script>
-
-    <!-- Konfigurasi Firebase -->
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyB6iNmZMtAp5UK4AEAVyq8BcffWXG72P88",
-        authDomain: "dbalmuslih.firebaseapp.com",
-        projectId: "dbalmuslih",
-      };
-      const app = firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-    </script>
-
-    <!-- Script custom -->
-    <script src="script.js"></script>
+    <!-- Script.js modular -->
+    <script type="module" src="script.js"></script>
   </body>
 </html>
