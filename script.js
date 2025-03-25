@@ -25,7 +25,14 @@ async function getData() {
       <hr>
       <p><strong>Nomor Rumah:</strong> ${data.nomor_rmh}</p>
       <p><strong>Nominal:</strong> Rp${data.nominal.toLocaleString()}</p>
-      <p><strong>Tanggal Masuk:</strong> ${data.tanggal_masuk}</p>
+      <p><strong>Tanggal Masuk:</strong> ${data.tanggal_masuk
+        .toDate()
+        .toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })}</p>
+
     `;
     dataContainer.appendChild(div);
   });
