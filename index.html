@@ -2,13 +2,231 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Website Dinamis Firebase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Masjid Al-Muslih</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <h1>Data dari Firebase</h1>
-    <div id="data-container"></div>
+  <body class="bg-light">
+    <div class="container-fluid py-3">
+      <!-- Bar Login -->
+      <div class="row mb-3">
+        <div class="col-12 text-end">
+          <button
+            type="button"
+            id="btnLogin"
+            class="btn btn-primary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#loginModal"
+          >
+            LOGIN
+          </button>
+          <button
+            type="button"
+            id="btnLogout"
+            class="btn btn-danger btn-sm"
+            style="display: none"
+            onclick="logoutUser()"
+          >
+            LOGOUT
+          </button>
+        </div>
+      </div>
 
-    <!-- Script.js modular -->
+      <!-- Konten Tabel -->
+      <div class="row">
+        <!-- Tabel Total -->
+        <!-- Tabel Total -->
+        <div class="col-lg-3 mb-4">
+          <h5 class="mb-3">📋 Total Infaq Masjid</h5>
+
+          <div class="table-responsive">
+            <table
+              class="table table-bordered table-striped align-middle"
+              style="font-size: 12px"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th>Pemasukan</th>
+                  <th>Pengeluaran</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="total-infaq"></tbody>
+              <tfoot>
+                <tr>
+                  <td id="totalPemasukan">Rp0</td>
+                  <td id="totalPengeluaran">Rp0</td>
+                  <td id="totalSelisih" class="fw-bold">Rp0</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tabel Pemasukan -->
+        <div class="col-lg-4 mb-4">
+          <h5 class="mb-3">📋 Pemasukan Infaq Masjid</h5>
+          <a
+            href="input_masuk.html"
+            class="btn btn-primary btn-sm mb-2"
+            id="btnTambahMasuk"
+            style="display: none"
+          >
+            ➕ Tambah
+          </a>
+
+          <div class="table-responsive">
+            <table
+              class="table table-bordered table-striped align-middle"
+              style="font-size: 12px"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th>No</th>
+                  <th>Nomor Rumah</th>
+                  <th>Nominal</th>
+                  <th>Tanggal Masuk</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="data-masuk"></tbody>
+              <tfoot>
+                <tr id="total-masuk">
+                  <td colspan="2" class="text-end"><strong>Total:</strong></td>
+                  <td id="totalNominalMasuk" colspan="3" class="fw-bold">
+                    Rp0
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tabel Pengeluaran -->
+        <div class="col-lg-5 mb-4">
+          <h5 class="mb-3">📋 Pengeluaran Infaq Masjid</h5>
+          <a
+            href="input_keluar.html"
+            class="btn btn-primary btn-sm mb-2"
+            id="btnTambahKeluar"
+            style="display: none"
+          >
+            ➕ Tambah
+          </a>
+
+          <div class="table-responsive">
+            <table
+              class="table table-bordered table-striped align-middle"
+              style="font-size: 12px"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th>No</th>
+                  <th>Pengeluaran</th>
+                  <th>Nominal</th>
+                  <th>Tanggal Keluar</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="data-keluar"></tbody>
+              <tfoot>
+                <tr id="total-keluar">
+                  <td colspan="2" class="text-end"><strong>Total:</strong></td>
+                  <td id="totalNominalKeluar" colspan="3" class="fw-bold">
+                    Rp0
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Login -->
+    <div
+      class="modal fade"
+      id="loginModal"
+      tabindex="-1"
+      aria-labelledby="loginModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login Admin</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input
+              type="text"
+              id="usernameInput"
+              class="form-control"
+              placeholder="Masukkan username"
+            />
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" onclick="checkLogin()">
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script Login -->
+    <script>
+      function checkSession() {
+        const isLoggedIn = sessionStorage.getItem("loggedIn") === "true";
+        document.getElementById("btnLogin").style.display = isLoggedIn
+          ? "none"
+          : "inline-block";
+        document.getElementById("btnLogout").style.display = isLoggedIn
+          ? "inline-block"
+          : "none";
+        document.getElementById("btnTambahMasuk").style.display = isLoggedIn
+          ? "inline-block"
+          : "none";
+        document.getElementById("btnTambahKeluar").style.display = isLoggedIn
+          ? "inline-block"
+          : "none";
+      }
+
+      function checkLogin() {
+        const username = document.getElementById("usernameInput").value.trim();
+        if (username === "admin2025") {
+          sessionStorage.setItem("loggedIn", "true");
+          checkSession();
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("loginModal")
+          );
+          modal.hide();
+        } else {
+          alert("Username salah!");
+        }
+      }
+
+      function logoutUser() {
+        sessionStorage.removeItem("loggedIn");
+        checkSession();
+        location.reload();
+      }
+
+      window.onload = checkSession;
+    </script>
+
+    <!-- Firebase Logic -->
     <script type="module" src="script.js"></script>
   </body>
 </html>
